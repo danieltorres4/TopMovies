@@ -1,0 +1,9 @@
+/* 
+  Localizable.strings
+  TopMovies
+
+  Created by Daniel ST on 22/10/24.
+  
+*/
+// MARK: Loading messages
+"loadingMessage" = "Loading...";
