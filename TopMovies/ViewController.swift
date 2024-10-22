@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  TopMovies
 //
-//  Created by Iván Sánchez Torres on 22/10/24.
+//  Created by Daniel ST on 22/10/24.
 //
 
 import UIKit
