@@ -7,8 +7,11 @@
 
 import Foundation
 
-class MainInteractor {
-    // https://api.themoviedb.org/3/movie/top_rated
+protocol TopRatedMoviesInteractor: AnyObject {
+    func getListOfMovies() async -> TopRatedMovies
+}
+
+class MainInteractor: TopRatedMoviesInteractor {
     func getListOfMovies() async -> TopRatedMovies {
         let apiKey = "apiKey".localized
         let url = URL(string: "https://api.themoviedb.org/3/movie/top_rated?api_key=\(apiKey)")!

@@ -16,9 +16,9 @@ class MainViewController: UIViewController {
         tv.register(MovieTableViewCell.self, forCellReuseIdentifier: "MovieTableViewCell")
         return tv
     }()
-    private let presenter: MainPresenter
+    private let presenter: TopRatedMoviesPresenter
     
-    init(presenter: MainPresenter) {
+    init(presenter: TopRatedMoviesPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }

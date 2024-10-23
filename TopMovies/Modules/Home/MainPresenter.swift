@@ -7,17 +7,23 @@
 
 import Foundation
 
+protocol TopRatedMoviesPresenter: AnyObject {
+    var ui: TopRatedMoviesUI? { get }
+    var movieViewModels: [MovieViewModel] { get }
+    func onViewAppear()
+}
+
 protocol TopRatedMoviesUI: AnyObject {
     func update(with movies: [MovieViewModel])
 }
 
-class MainPresenter {
-    var ui: TopRatedMoviesUI?
+class MainPresenter: TopRatedMoviesPresenter {
+    weak var ui: TopRatedMoviesUI?
     private let mapper: MovieMapper
-    private let mainInteractor: MainInteractor
+    private let mainInteractor: TopRatedMoviesInteractor
     var movieViewModels: [MovieViewModel] = []
     
-    init(mainInteractor: MainInteractor, movieMapper: MovieMapper = MovieMapper()) {
+    init(mainInteractor: TopRatedMoviesInteractor, movieMapper: MovieMapper = MovieMapper()) {
         self.mainInteractor = mainInteractor
         self.mapper = movieMapper
     }
