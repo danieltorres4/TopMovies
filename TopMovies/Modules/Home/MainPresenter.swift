@@ -8,22 +8,25 @@
 import Foundation
 
 protocol TopRatedMoviesUI: AnyObject {
-    func update(with movies: [Movie])
+    func update(with movies: [MovieViewModel])
 }
 
 class MainPresenter {
     var ui: TopRatedMoviesUI?
+    private let mapper: MovieMapper
     private let mainInteractor: MainInteractor
-    var models: [Movie] = []
+    var movieViewModels: [MovieViewModel] = []
     
-    init(mainInteractor: MainInteractor) {
+    init(mainInteractor: MainInteractor, movieMapper: MovieMapper = MovieMapper()) {
         self.mainInteractor = mainInteractor
+        self.mapper = movieMapper
     }
     
     func onViewAppear() {
         Task {
-            models = await mainInteractor.getListOfMovies().results
-            ui?.update(with: models)
+            let models = await mainInteractor.getListOfMovies().results
+            movieViewModels = models.map(mapper.map(movie:))
+            ui?.update(with: movieViewModels)
         }
     }
 }

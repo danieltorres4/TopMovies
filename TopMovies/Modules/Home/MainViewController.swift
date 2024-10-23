@@ -16,9 +16,10 @@ class MainViewController: UIViewController {
         tv.register(MovieTableViewCell.self, forCellReuseIdentifier: "MovieTableViewCell")
         return tv
     }()
-    var presenter: MainPresenter?
+    private let presenter: MainPresenter
     
-    init() {
+    init(presenter: MainPresenter) {
+        self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -35,7 +36,7 @@ class MainViewController: UIViewController {
     }
 
     func getTopRatedMovies() {
-        presenter?.onViewAppear()
+        presenter.onViewAppear()
     }
     
     private func setupViews() {
@@ -56,20 +57,20 @@ class MainViewController: UIViewController {
 // MARK: Table View Methods
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter!.models.count
+        presenter.movieViewModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTableViewCell", for: indexPath) as! MovieTableViewCell
         cell.backgroundColor = UIColor(named: "BackgroundColor")
-        let model = presenter!.models[indexPath.row]
+        let model = presenter.movieViewModels[indexPath.row]
         cell.configureCell(model: model)
         return cell
     }
 }
 
 extension MainViewController: TopRatedMoviesUI {
-    func update(with movies: [Movie]) {
+    func update(with movies: [MovieViewModel]) {
         debugPrint("Received data: \(movies)")
         DispatchQueue.main.async {
             self.topRatedMoviesTV.reloadData()

@@ -9,12 +9,12 @@ import Foundation
 import UIKit
 
 class MainRouter {
+    // Component connection
     func showTopRatedMovies(window: UIWindow?) {
-        let viewController = MainViewController()
         let interactor = MainInteractor()
         let presenter = MainPresenter(mainInteractor: interactor)
+        let viewController = MainViewController(presenter: presenter)
         presenter.ui = viewController
-        viewController.presenter = presenter
         
         window?.rootViewController = viewController
         window?.makeKeyAndVisible()

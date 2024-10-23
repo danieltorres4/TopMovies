@@ -65,10 +65,10 @@ class MovieTableViewCell: UITableViewCell {
         ])
     }
     
-    func configureCell(model: Movie) {
+    func configureCell(model: MovieViewModel) {
         movieName.text = model.title
         movieReleaseDateLabel.text = model.releaseDate
-        movieImageView.loadFrom(from: "imageURLPrefix".localized + (model.posterPath ?? ""))
+        movieImageView.loadFrom(from: model.posterPath)
     }
 
     
