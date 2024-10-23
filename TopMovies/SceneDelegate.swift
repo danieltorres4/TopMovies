@@ -10,15 +10,13 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    var topRatedMovies = MainRouter()
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(frame: windowScene.coordinateSpace.bounds)
-        window?.windowScene = windowScene
-        window?.rootViewController = MainViewController()
-        window?.makeKeyAndVisible()
+        window = UIWindow(windowScene: windowScene)
+        topRatedMovies.showTopRatedMovies(window: window)
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

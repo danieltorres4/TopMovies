@@ -7,3 +7,7 @@
 */
 // MARK: Loading messages
 "loadingMessage" = "Loading...";
+
+// MARK: API Key
+"apiKey" = "aac68339b14a798e91c45b11fd82e3ee";
+"imageURLPrefix" = "https://image.tmdb.org/t/p/w200";
