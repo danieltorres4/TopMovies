@@ -8,15 +8,31 @@
 import Foundation
 import UIKit
 
-class MainRouter {
+protocol MainRouterProtocol: AnyObject {
+    var movieDetailRouter: MoviewDetailRouterProtocol? { get }
+    var topRatedMoviesView: MainViewController? { get }
+    func showTopRatedMovies(window: UIWindow?)
+    func showMovieDetail(of movieID: String, movie: MovieViewModel)
+}
+
+class MainRouter: MainRouterProtocol {
     // Component connection
+    var topRatedMoviesView: MainViewController?
+    var movieDetailRouter: MoviewDetailRouterProtocol?
+    
     func showTopRatedMovies(window: UIWindow?) {
+        self.movieDetailRouter = MovieDetailRouter()
         let interactor = MainInteractor()
-        let presenter = MainPresenter(mainInteractor: interactor)
-        let viewController = MainViewController(presenter: presenter)
-        presenter.ui = viewController
+        let presenter = MainPresenter(mainInteractor: interactor, router: self)
+        topRatedMoviesView = MainViewController(presenter: presenter)
+        presenter.ui = topRatedMoviesView
         
-        window?.rootViewController = viewController
+        window?.rootViewController = topRatedMoviesView
         window?.makeKeyAndVisible()
+    }
+    
+    func showMovieDetail(of movieID: String, movie: MovieViewModel) {
+        guard let vc = topRatedMoviesView else { return }
+        movieDetailRouter?.showMovieDetail(movieID: movieID, fromVC: vc, movie: movie)
     }
 }

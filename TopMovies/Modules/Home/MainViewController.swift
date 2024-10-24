@@ -50,12 +50,13 @@ class MainViewController: UIViewController {
         ])
         
         topRatedMoviesTV.dataSource = self
+        topRatedMoviesTV.delegate = self
     }
 
 }
 
 // MARK: Table View Methods
-extension MainViewController: UITableViewDataSource {
+extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         presenter.movieViewModels.count
     }
@@ -66,6 +67,10 @@ extension MainViewController: UITableViewDataSource {
         let model = presenter.movieViewModels[indexPath.row]
         cell.configureCell(model: model)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.selectedMovie(with: indexPath.row, movie: MovieViewModel(title: presenter.movieViewModels[indexPath.row].title, posterPath: presenter.movieViewModels[indexPath.row].posterPath, releaseDate: presenter.movieViewModels[indexPath.row].releaseDate))
     }
 }
 
