@@ -34,9 +34,15 @@ class MainPresenter: TopRatedMoviesPresenter {
     
     func onViewAppear() {
         Task {
-            models = await mainInteractor.getListOfMovies().results
-            movieViewModels = models.map(mapper.map(movie:))
-            ui?.update(with: movieViewModels)
+            do {
+                let moviesResponse = try await mainInteractor.getListOfMovies()
+                debugPrint("Top Rated Movies: \(moviesResponse)")
+                models = moviesResponse.results
+                movieViewModels = models.map(mapper.map(movie:))
+                ui?.update(with: movieViewModels)
+            } catch {
+                debugPrint("Failed to fetch movies: \(error.localizedDescription)")
+            }
         }
     }
     

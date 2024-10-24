@@ -34,11 +34,15 @@ class MovieDetailPresenter: MovieDetailPresenterProtocol {
     
     func onViewAppear() {
         Task {
-            let model = await interactor.getDetailMovie(withID: movieID)
-            let viewModel = mapper.map(movie: model)
-            debugPrint(viewModel)
-            await MainActor.run {
-                self.ui?.updateUI(with: viewModel, movie: movie)
+            do {
+                let movieDetails = try await interactor.getDetailMovie(withID: movieID)
+                let viewModel = mapper.map(movie: movieDetails)
+                debugPrint(viewModel)
+                await MainActor.run {
+                    self.ui?.updateUI(with: viewModel, movie: movie)
+                }
+            } catch {
+                debugPrint("Failed to get movie details: \(error)")
             }
         }
     }

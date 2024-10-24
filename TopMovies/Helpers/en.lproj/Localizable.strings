@@ -16,4 +16,4 @@
 // MARK: Movie Detail Values
 "releaseDateTitle" = "Release Date: ";
 "averageTitle" = "Average: ";
-"averageDefaultValue" = "Unknown";
+"defaultValue" = "Unknown";

@@ -8,18 +8,16 @@
 import Foundation
 
 struct MovieDetail: Decodable {
-    var overview: String
-    var posterPath: String?
-    var releaseDate: String?
-    var title: String
-    var voteAverage: Double?
     var homepage: String?
     var tagline: String?
     
     enum CodingKeys: String, CodingKey {
-        case title, overview, homepage, tagline
-        case releaseDate = "release_date"
-        case voteAverage = "vote_average"
-        case posterPath = "poster_path"
+        case homepage, tagline
+    }
+    
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.homepage = try container.decodeIfPresent(String.self, forKey: .homepage)
+        self.tagline = try container.decodeIfPresent(String.self, forKey: .tagline)
     }
 }

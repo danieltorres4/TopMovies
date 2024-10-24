@@ -9,6 +9,6 @@ import Foundation
 
 struct MovieDetailMapper {
     func map(movie: MovieDetail) -> MovieDetailViewModel {
-        .init(overview: movie.overview, posterPath: ("imageURLPrefix".localized + (movie.posterPath ?? "")), releaseDate: movie.releaseDate ?? "", title: movie.title, voteAverage: movie.voteAverage ?? 0.0, homepage: movie.homepage ?? "", tagline: movie.tagline ?? "")
+        .init(homepage: movie.homepage ?? "", tagline: movie.tagline ?? "")
     }
 }
