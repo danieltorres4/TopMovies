@@ -70,7 +70,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.selectedMovie(with: indexPath.row, movie: MovieViewModel(title: presenter.movieViewModels[indexPath.row].title, posterPath: presenter.movieViewModels[indexPath.row].posterPath, releaseDate: presenter.movieViewModels[indexPath.row].releaseDate))
+        presenter.selectedMovie(with: indexPath.row, movie: MovieViewModel(title: presenter.movieViewModels[indexPath.row].title, posterPath: presenter.movieViewModels[indexPath.row].posterPath, releaseDate: presenter.movieViewModels[indexPath.row].releaseDate, overview: presenter.movieViewModels[indexPath.row].overview, voteAverage: presenter.movieViewModels[indexPath.row].voteAverage))
     }
 }
 

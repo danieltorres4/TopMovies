@@ -12,3 +12,8 @@
 "apiKey" = "aac68339b14a798e91c45b11fd82e3ee";
 "imageURLPrefix" = "https://image.tmdb.org/t/p/w200";
 "mainURL" = "https://api.themoviedb.org/3/movie/";
+
+// MARK: Movie Detail Values
+"releaseDateTitle" = "Release Date: ";
+"averageTitle" = "Average: ";
+"averageDefaultValue" = "Unknown";

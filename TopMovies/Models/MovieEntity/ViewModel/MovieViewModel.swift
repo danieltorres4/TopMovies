@@ -12,4 +12,6 @@ struct MovieViewModel {
     var title: String
     var posterPath: String
     var releaseDate: String
+    var overview: String
+    var voteAverage: Double
 }
