@@ -8,6 +8,7 @@
 import UIKit
 
 class MovieDetailView: UIView {
+    var movieHomepageURL: URL?
     let movieImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
@@ -56,6 +57,8 @@ class MovieDetailView: UIView {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.font = UIFont(name: "Poppins-Italic", size: 15)
+        label.textColor = .systemBlue
+        label.isUserInteractionEnabled = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -63,6 +66,9 @@ class MovieDetailView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
+        
+        let homepageGesture = UITapGestureRecognizer(target: self, action: #selector(openHomepage))
+        movieHomepage.addGestureRecognizer(homepageGesture)
     }
     
     required init?(coder: NSCoder) {
@@ -96,42 +102,17 @@ class MovieDetailView: UIView {
 
             movieHomepage.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
             movieHomepage.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
-            /*stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)*/
-            /*movieImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
-            movieImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            movieImageView.heightAnchor.constraint(equalToConstant: 250),
-            movieImageView.widthAnchor.constraint(equalToConstant: 200),
-            
-            movieTitle.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 16),
-            movieTitle.centerXAnchor.constraint(equalTo: centerXAnchor),
-            movieTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            movieTitle.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            
-            movieTagline.topAnchor.constraint(equalTo: movieTitle.bottomAnchor, constant: 16),
-            movieTagline.centerXAnchor.constraint(equalTo: centerXAnchor),
-            movieTagline.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            movieTagline.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            
-            movieOverview.topAnchor.constraint(equalTo: movieTagline.bottomAnchor, constant: 16),
-            movieOverview.centerXAnchor.constraint(equalTo: centerXAnchor),
-            movieOverview.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            movieOverview.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            
-            movieReleaseDate.topAnchor.constraint(equalTo: movieOverview.bottomAnchor, constant: 16),
-            movieReleaseDate.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            movieReleaseDate.widthAnchor.constraint(equalToConstant: 150),
-            
-            movieVoteAverage.centerYAnchor.constraint(equalTo: movieReleaseDate.centerYAnchor),
-            movieVoteAverage.leadingAnchor.constraint(equalTo: movieReleaseDate.trailingAnchor, constant: 16),
-            movieVoteAverage.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16),
-            
-            movieHomepage.topAnchor.constraint(equalTo: movieReleaseDate.bottomAnchor, constant: 16),
-            movieHomepage.centerXAnchor.constraint(equalTo: centerXAnchor),
-            movieHomepage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            movieHomepage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)*/
         ])
     }
+    
+    @objc func openHomepage() {
+        guard let url = movieHomepageURL else { return }
+        UIApplication.shared.open(url)
+    }
+    
+    func configureView(with movieHomepageText: String, homepageURL: URL?) {
+        movieHomepage.text = movieHomepageText
+        movieHomepageURL = homepageURL
+    }
+
 }

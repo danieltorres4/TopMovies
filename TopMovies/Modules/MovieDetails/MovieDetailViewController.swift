@@ -66,6 +66,14 @@ extension MovieDetailViewController: MovieDetailPresenterUI {
         movieDetailView.movieReleaseDate.text = "releaseDateTitle".localized + movie.releaseDate
         movieDetailView.movieVoteAverage.text = "averageTitle".localized + String(movie.voteAverage)
         movieDetailView.movieHomepage.text = viewModel.homepage
+        
+        if let homepageURL = URL(string: viewModel.homepage), homepageURL.scheme == "https" {
+            movieDetailView.configureView(with: "movieHomepageAction".localized, homepageURL: homepageURL)
+        } else {
+            movieDetailView.movieHomepage.textColor = UIColor(named: "FontColor")
+            movieDetailView.configureView(with: "notAvailableDomain".localized, homepageURL: nil)
+        }
+        
         movieDetailView.movieImageView.loadFrom(from: movie.posterPath)
     }
 }

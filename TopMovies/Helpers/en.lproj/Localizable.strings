@@ -17,3 +17,5 @@
 "releaseDateTitle" = "Release Date: ";
 "averageTitle" = "Average: ";
 "defaultValue" = "Unknown";
+"notAvailableDomain" = "Homepage not available";
+"movieHomepageAction" = "Tap to visit the movie homepage";
