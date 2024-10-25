@@ -10,6 +10,8 @@ import UIKit
 class MovieDetailViewController: UIViewController {
     private let presenter: MovieDetailPresenterProtocol
     private let movieDetailView = MovieDetailView()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
     
     init(presenter: MovieDetailPresenterProtocol) {
         self.presenter = presenter
@@ -28,13 +30,29 @@ class MovieDetailViewController: UIViewController {
     }
     
     func setupViews() {
-        view.addSubview(movieDetailView)
+        view.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(movieDetailView)
         movieDetailView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
-            movieDetailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            movieDetailView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            movieDetailView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            movieDetailView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            
+            movieDetailView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            movieDetailView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            movieDetailView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            movieDetailView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
 

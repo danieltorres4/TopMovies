@@ -16,7 +16,7 @@ class MovieDetailView: UIView {
     }()
     let movieTitle: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 2
+        label.numberOfLines = 0
         label.font = UIFont(name: "BebasNeue-Regular", size: 32)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -24,7 +24,7 @@ class MovieDetailView: UIView {
     let movieOverview: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
-        label.font = UIFont(name: "Poppins-Regular", size: 20)
+        label.font = UIFont(name: "Poppins-Regular", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -44,15 +44,15 @@ class MovieDetailView: UIView {
     }()
     let movieTagline: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 2
-        label.font = UIFont(name: "Poppins-Regular", size: 15)
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Poppins-Italic", size: 18)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     let movieHomepage: UILabel = {
         let label = UILabel()
-        label.numberOfLines = 2
-        label.font = UIFont(name: "Poppins-Regular", size: 15)
+        label.numberOfLines = 0
+        label.font = UIFont(name: "Poppins-Italic", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -67,66 +67,51 @@ class MovieDetailView: UIView {
     }
     
     func setupViews() {
-        addSubview(movieImageView)
-        addSubview(movieTitle)
-        addSubview(movieOverview)
-        addSubview(movieTagline)
-        addSubview(movieReleaseDate)
-        addSubview(movieVoteAverage)
-        addSubview(movieHomepage)
+        let stackView = UIStackView(arrangedSubviews: [movieImageView, movieTitle, movieTagline, movieOverview, movieReleaseDate, movieVoteAverage, movieHomepage])
+        stackView.axis = .vertical
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        addSubview(stackView)
         
         // Constraints for movieImageView (centered at the top)
         NSLayoutConstraint.activate([
-            movieImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
+            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+            /*movieImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
             movieImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             movieImageView.heightAnchor.constraint(equalToConstant: 250),
-            movieImageView.widthAnchor.constraint(equalToConstant: 200)
-        ])
-        
-        // Constraints for movieTitle (below movieImageView)
-        NSLayoutConstraint.activate([
+            movieImageView.widthAnchor.constraint(equalToConstant: 200),
+            
             movieTitle.topAnchor.constraint(equalTo: movieImageView.bottomAnchor, constant: 16),
             movieTitle.centerXAnchor.constraint(equalTo: centerXAnchor),
             movieTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            movieTitle.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
-        ])
-        
-        // Constraints for movieOverview (below movieTitle)
-        NSLayoutConstraint.activate([
-            movieOverview.topAnchor.constraint(equalTo: movieTitle.bottomAnchor, constant: 16),
-            movieOverview.centerXAnchor.constraint(equalTo: centerXAnchor),
-            movieOverview.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            movieOverview.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
-        ])
-        
-        // Constraints for movieTagline (below movieOverview)
-        NSLayoutConstraint.activate([
-            movieTagline.topAnchor.constraint(equalTo: movieOverview.bottomAnchor, constant: 16),
+            movieTitle.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            
+            movieTagline.topAnchor.constraint(equalTo: movieTitle.bottomAnchor, constant: 16),
             movieTagline.centerXAnchor.constraint(equalTo: centerXAnchor),
             movieTagline.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            movieTagline.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
-        ])
-        
-        // Constraints for movieReleaseDate (left side below movieTagline)
-        NSLayoutConstraint.activate([
-            movieReleaseDate.topAnchor.constraint(equalTo: movieTagline.bottomAnchor, constant: 16),
+            movieTagline.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            
+            movieOverview.topAnchor.constraint(equalTo: movieTagline.bottomAnchor, constant: 16),
+            movieOverview.centerXAnchor.constraint(equalTo: centerXAnchor),
+            movieOverview.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            movieOverview.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            
+            movieReleaseDate.topAnchor.constraint(equalTo: movieOverview.bottomAnchor, constant: 16),
             movieReleaseDate.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            movieReleaseDate.widthAnchor.constraint(equalToConstant: 150)
-        ])
-        
-        // Constraints for movieVoteAverage (right side next to movieReleaseDate)
-        NSLayoutConstraint.activate([
+            movieReleaseDate.widthAnchor.constraint(equalToConstant: 150),
+            
             movieVoteAverage.centerYAnchor.constraint(equalTo: movieReleaseDate.centerYAnchor),
             movieVoteAverage.leadingAnchor.constraint(equalTo: movieReleaseDate.trailingAnchor, constant: 16),
-            movieVoteAverage.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16)
-        ])
-        
-        // Constraints for movieHomepage (centered below movieReleaseDate and movieVoteAverage)
-        NSLayoutConstraint.activate([
+            movieVoteAverage.trailingAnchor.constraint(lessThanOrEqualTo: trailingAnchor, constant: -16),
+            
             movieHomepage.topAnchor.constraint(equalTo: movieReleaseDate.bottomAnchor, constant: 16),
             movieHomepage.centerXAnchor.constraint(equalTo: centerXAnchor),
             movieHomepage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            movieHomepage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
+            movieHomepage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)*/
         ])
     }
 }
