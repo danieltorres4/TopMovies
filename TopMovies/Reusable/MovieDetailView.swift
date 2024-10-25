@@ -12,6 +12,8 @@ class MovieDetailView: UIView {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
         iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.heightAnchor.constraint(equalToConstant: 250).isActive = true
+        iv.widthAnchor.constraint(equalToConstant: 250).isActive = true
         return iv
     }()
     let movieTitle: UILabel = {
@@ -52,6 +54,7 @@ class MovieDetailView: UIView {
     let movieHomepage: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
+        label.textAlignment = .center
         label.font = UIFont(name: "Poppins-Italic", size: 15)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -67,19 +70,36 @@ class MovieDetailView: UIView {
     }
     
     func setupViews() {
-        let stackView = UIStackView(arrangedSubviews: [movieImageView, movieTitle, movieTagline, movieOverview, movieReleaseDate, movieVoteAverage, movieHomepage])
+        let releaseDateAndVoteSV = UIStackView(arrangedSubviews: [movieReleaseDate, movieVoteAverage])
+        releaseDateAndVoteSV.axis = .horizontal
+        releaseDateAndVoteSV.spacing = 16
+        releaseDateAndVoteSV.alignment = .fill
+        releaseDateAndVoteSV.distribution = .fillEqually
+        
+        let stackView = UIStackView(arrangedSubviews: [movieImageView, movieTitle, movieTagline, movieOverview, releaseDateAndVoteSV, movieHomepage])
         stackView.axis = .vertical
         stackView.spacing = 16
+        stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         addSubview(stackView)
         
-        // Constraints for movieImageView (centered at the top)
+        // Constraints
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
+
+            movieOverview.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            movieOverview.trailingAnchor.constraint(equalTo: stackView.trailingAnchor),
+
+            movieHomepage.leadingAnchor.constraint(equalTo: stackView.leadingAnchor),
+            movieHomepage.trailingAnchor.constraint(equalTo: stackView.trailingAnchor)
+            /*stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)*/
             /*movieImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 16),
             movieImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             movieImageView.heightAnchor.constraint(equalToConstant: 250),
