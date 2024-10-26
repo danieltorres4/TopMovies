@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 protocol TopRatedMoviesPresenter: AnyObject {
     var ui: TopRatedMoviesUI? { get }
@@ -18,6 +19,7 @@ protocol TopRatedMoviesPresenter: AnyObject {
 
 protocol TopRatedMoviesUI: AnyObject {
     func update(with movies: [MovieViewModel])
+    // func createFooterSpinnerView() -> UIView
 }
 
 class MainPresenter: TopRatedMoviesPresenter {
@@ -44,8 +46,9 @@ class MainPresenter: TopRatedMoviesPresenter {
                 currentPage = moviesResponse.page
                 totalPages = moviesResponse.totalPages
                 models = moviesResponse.results
-                movieViewModels = models.map(mapper.map(movie:))
-                ui?.update(with: movieViewModels)
+                let newModels = models.map(mapper.map(movie:))
+                movieViewModels.append(contentsOf: newModels)
+                ui?.update(with: newModels)
             } catch {
                 debugPrint("Failed to fetch movies: \(error.localizedDescription)")
             }
@@ -53,7 +56,7 @@ class MainPresenter: TopRatedMoviesPresenter {
     }
     
     func selectedMovie(with id: Int, movie: MovieViewModel) {
-        let movieID = models[id].id
+        let movieID = movieViewModels[id].id
         debugPrint(movieID)
         router.showMovieDetail(of: movieID.description, movie: movie)
     }

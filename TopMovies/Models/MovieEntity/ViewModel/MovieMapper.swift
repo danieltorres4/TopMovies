@@ -10,6 +10,6 @@ import Foundation
 struct MovieMapper {
     // Using MovieViewModel in order to only get the used data
     func map(movie: Movie) -> MovieViewModel {
-        MovieViewModel(title: movie.title, posterPath: ("imageURLPrefix".localized + (movie.posterPath ?? "")), releaseDate: movie.releaseDate ?? "defaultValue".localized, overview: movie.overview, voteAverage: movie.voteAverage ?? 0.0)
+        MovieViewModel(id: movie.id, title: movie.title, posterPath: ("imageURLPrefix".localized + (movie.posterPath ?? "")), releaseDate: movie.releaseDate ?? "defaultValue".localized, overview: movie.overview, voteAverage: movie.voteAverage ?? 0.0)
     }
 }

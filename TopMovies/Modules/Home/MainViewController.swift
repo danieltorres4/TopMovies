@@ -36,8 +36,8 @@ class MainViewController: UIViewController {
         getTopRatedMovies(page: 1)
     }
 
-    func getTopRatedMovies(page: Int) {
-        presenter.onViewAppear(page: page, pagination: false)
+    func getTopRatedMovies(page: Int, pagination: Bool = false) {
+        presenter.onViewAppear(page: page, pagination: pagination)
     }
     
     private func setupViews() {
@@ -71,18 +71,18 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.selectedMovie(with: indexPath.row, movie: MovieViewModel(title: presenter.movieViewModels[indexPath.row].title, posterPath: presenter.movieViewModels[indexPath.row].posterPath, releaseDate: presenter.movieViewModels[indexPath.row].releaseDate, overview: presenter.movieViewModels[indexPath.row].overview, voteAverage: presenter.movieViewModels[indexPath.row].voteAverage))
+        presenter.selectedMovie(with: indexPath.row, movie: MovieViewModel(id: presenter.movieViewModels[indexPath.row].id, title: presenter.movieViewModels[indexPath.row].title, posterPath: presenter.movieViewModels[indexPath.row].posterPath, releaseDate: presenter.movieViewModels[indexPath.row].releaseDate, overview: presenter.movieViewModels[indexPath.row].overview, voteAverage: presenter.movieViewModels[indexPath.row].voteAverage))
         topRatedMoviesTV.deselectRow(at: indexPath, animated: true)
     }
     
-    /*func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let lastItem = presenter.movieViewModels.count - 1
         if indexPath.row == lastItem && presenter.currentPage < presenter.totalPages {
             // Request more info
             debugPrint("Reached the end of the list...")
-            // getTopRatedMovies(page: presenter.currentPage + 1)
+            getTopRatedMovies(page: presenter.currentPage + 1, pagination: true)
         }
-    }*/
+    }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = TableHeaderView(title: "topRatedMoviesTitle".localized)
@@ -95,22 +95,20 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension MainViewController: UIScrollViewDelegate {
+/*extension MainViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
         if position > (topRatedMoviesTV.contentSize.height - 100 - scrollView.frame.size.height) {
             // Fetch more data
             debugPrint("Fetch more...")
-            presenter.onViewAppear(page: presenter.currentPage + 1, pagination: true)
+            // presenter.onViewAppear(page: presenter.currentPage + 1, pagination: true)
         }
     }
-}
+}*/
 
 extension MainViewController: TopRatedMoviesUI {
     func update(with movies: [MovieViewModel]) {
-        for movie in movies {
-            topRatedMovies.append(movie)
-        }
+        self.topRatedMovies.append(contentsOf: movies)
         debugPrint("Received data: \(movies)")
         DispatchQueue.main.async {
             self.topRatedMoviesTV.reloadData()
