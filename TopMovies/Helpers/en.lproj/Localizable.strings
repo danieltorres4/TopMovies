@@ -19,3 +19,6 @@
 "defaultValue" = "Unknown";
 "notAvailableDomain" = "Homepage not available";
 "movieHomepageAction" = "Tap to visit the movie homepage";
+
+// MARK: Top Rated Movies Values
+"topRatedMoviesTitle" = "Top Rated Movies";

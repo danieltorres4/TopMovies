@@ -10,7 +10,9 @@ import Foundation
 protocol TopRatedMoviesPresenter: AnyObject {
     var ui: TopRatedMoviesUI? { get }
     var movieViewModels: [MovieViewModel] { get }
-    func onViewAppear()
+    var currentPage: Int { get }
+    var totalPages: Int { get }
+    func onViewAppear(page: Int, pagination: Bool)
     func selectedMovie(with id: Int, movie: MovieViewModel)
 }
 
@@ -25,6 +27,8 @@ class MainPresenter: TopRatedMoviesPresenter {
     var movieViewModels: [MovieViewModel] = []
     private let router: MainRouterProtocol
     private var models: [Movie] = []
+    var currentPage: Int = 0
+    var totalPages: Int = 0
     
     init(mainInteractor: TopRatedMoviesInteractor, movieMapper: MovieMapper = MovieMapper(), router: MainRouterProtocol) {
         self.mainInteractor = mainInteractor
@@ -32,11 +36,13 @@ class MainPresenter: TopRatedMoviesPresenter {
         self.router = router
     }
     
-    func onViewAppear() {
+    func onViewAppear(page: Int, pagination: Bool) {
         Task {
             do {
-                let moviesResponse = try await mainInteractor.getListOfMovies()
+                let moviesResponse = try await mainInteractor.getListOfMovies(page: page)
                 debugPrint("Top Rated Movies: \(moviesResponse)")
+                currentPage = moviesResponse.page
+                totalPages = moviesResponse.totalPages
                 models = moviesResponse.results
                 movieViewModels = models.map(mapper.map(movie:))
                 ui?.update(with: movieViewModels)
