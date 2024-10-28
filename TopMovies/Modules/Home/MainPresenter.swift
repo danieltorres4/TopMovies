@@ -20,6 +20,8 @@ protocol TopRatedMoviesPresenter: AnyObject {
 protocol TopRatedMoviesUI: AnyObject {
     func update(with movies: [MovieViewModel])
     // func createFooterSpinnerView() -> UIView
+    func showLoaderView(loaderView: LoaderView?)
+    func hideLoaderView(loaderView: LoaderView?)
 }
 
 class MainPresenter: TopRatedMoviesPresenter {
@@ -39,6 +41,8 @@ class MainPresenter: TopRatedMoviesPresenter {
     }
     
     func onViewAppear(page: Int, pagination: Bool) {
+        var loaderView: LoaderView? = LoaderView()
+        ui?.showLoaderView(loaderView: loaderView)
         Task {
             do {
                 let moviesResponse = try await mainInteractor.getListOfMovies(page: page)
@@ -53,6 +57,8 @@ class MainPresenter: TopRatedMoviesPresenter {
                 debugPrint("Failed to fetch movies: \(error.localizedDescription)")
             }
         }
+        ui?.hideLoaderView(loaderView: loaderView)
+        loaderView = nil
     }
     
     func selectedMovie(with id: Int, movie: MovieViewModel) {

@@ -31,6 +31,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "BackgroundColor")
+        topRatedMoviesTV.backgroundColor = UIColor(named: "BackgroundColor")
         debugPrint("ViewDidLoad")
         setupViews()
         getTopRatedMovies(page: 1)
@@ -47,7 +48,7 @@ class MainViewController: UIViewController {
             topRatedMoviesTV.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             topRatedMoviesTV.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             topRatedMoviesTV.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            topRatedMoviesTV.topAnchor.constraint(equalTo: view.topAnchor) // view.safeAreaLayoutGuide.topAnchor
+            topRatedMoviesTV.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor) // view.safeAreaLayoutGuide.topAnchor view.topAnchor
         ])
         
         topRatedMoviesTV.dataSource = self
@@ -71,7 +72,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.selectedMovie(with: indexPath.row, movie: MovieViewModel(id: presenter.movieViewModels[indexPath.row].id, title: presenter.movieViewModels[indexPath.row].title, posterPath: presenter.movieViewModels[indexPath.row].posterPath, releaseDate: presenter.movieViewModels[indexPath.row].releaseDate, overview: presenter.movieViewModels[indexPath.row].overview, voteAverage: presenter.movieViewModels[indexPath.row].voteAverage))
+        presenter.selectedMovie(with: indexPath.row, movie: MovieViewModel(id: presenter.movieViewModels[indexPath.row].id, title: presenter.movieViewModels[indexPath.row].title, posterPath: presenter.movieViewModels[indexPath.row].posterPath, releaseDate: presenter.movieViewModels[indexPath.row].releaseDate, overview: presenter.movieViewModels[indexPath.row].overview, voteAverage: presenter.movieViewModels[indexPath.row].voteAverage)) // typedef
         topRatedMoviesTV.deselectRow(at: indexPath, animated: true)
     }
     
@@ -95,23 +96,25 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-/*extension MainViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let position = scrollView.contentOffset.y
-        if position > (topRatedMoviesTV.contentSize.height - 100 - scrollView.frame.size.height) {
-            // Fetch more data
-            debugPrint("Fetch more...")
-            // presenter.onViewAppear(page: presenter.currentPage + 1, pagination: true)
-        }
-    }
-}*/
-
 extension MainViewController: TopRatedMoviesUI {
     func update(with movies: [MovieViewModel]) {
         self.topRatedMovies.append(contentsOf: movies)
         debugPrint("Received data: \(movies)")
         DispatchQueue.main.async {
             self.topRatedMoviesTV.reloadData()
+        }
+    }
+    
+    func showLoaderView(loaderView: LoaderView?) {
+        guard let loaderView = loaderView else { return }
+        DispatchQueue.main.async {
+            loaderView.showLoader()
+        }
+    }
+    func hideLoaderView(loaderView: LoaderView?) {
+        guard let loaderView = loaderView else { return }
+        DispatchQueue.main.async {
+            loaderView.removeLoader()
         }
     }
 }
