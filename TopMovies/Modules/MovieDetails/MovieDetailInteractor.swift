@@ -13,7 +13,7 @@ protocol MovieDetailInteractorProtocol {
 
 class MovieDetailInteractor: MovieDetailInteractorProtocol {
     func getDetailMovie(withID id: String) async throws -> MovieDetail {
-        guard let url = URL(string: "mainURL".localized + "\(id)?api_key=" + "apiKey".localized) else {
+        guard let apiKey = getConfigurationValue(forKey: "API_KEY"), let baseURL = getConfigurationValue(forKey: "API_BASE_URL"), let url = URL(string: "\(baseURL)/movie/\(id)?api_key=\(apiKey)") else {
             throw NetworkError.invalidURL
         }
         

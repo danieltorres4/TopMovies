@@ -9,9 +9,8 @@
 "loadingMessage" = "Loading...";
 
 // MARK: API Key
-"apiKey" = "aac68339b14a798e91c45b11fd82e3ee";
 "imageURLPrefix" = "https://image.tmdb.org/t/p/w200";
-"mainURL" = "https://api.themoviedb.org/3/movie/";
+"authValue" = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhYWM2ODMzOWIxNGE3OThlOTFjNDViMTFmZDgyZTNlZSIsIm5iZiI6MTcyOTY5ODg2MS41NDI2NTksInN1YiI6IjY0YTczZjFhZjkyNTMyMDBlYjZjNGNjMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hkSq4KpHTWaLR6N9a0JdbPMq-gSQUTF7_FjN2z6WZEA";
 
 // MARK: Movie Detail Values
 "releaseDateTitle" = "Release Date: ";

@@ -19,8 +19,7 @@ enum NetworkError: Error {
 
 class MainInteractor: TopRatedMoviesInteractor {
     func getListOfMovies(page: Int?) async throws -> TopRatedMovies {
-        let apiKey = "apiKey".localized
-        guard let url = URL(string: "https://api.themoviedb.org/3/movie/top_rated?api_key=\(apiKey)") else {
+        guard let apiKey = getConfigurationValue(forKey: "API_KEY"), let baseURL = getConfigurationValue(forKey: "API_BASE_URL"), let url = URL(string: "\(baseURL)/movie/top_rated?api_key=\(apiKey)") else {
             throw NetworkError.invalidURL
         }
         
@@ -41,7 +40,7 @@ class MainInteractor: TopRatedMoviesInteractor {
         request.timeoutInterval = 10
         request.allHTTPHeaderFields = [
             "accept": "application/json",
-            "Authorization": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhYWM2ODMzOWIxNGE3OThlOTFjNDViMTFmZDgyZTNlZSIsIm5iZiI6MTcyOTY5ODg2MS41NDI2NTksInN1YiI6IjY0YTczZjFhZjkyNTMyMDBlYjZjNGNjMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hkSq4KpHTWaLR6N9a0JdbPMq-gSQUTF7_FjN2z6WZEA"
+            "Authorization": "authValue".localized
         ]
         
         do {
