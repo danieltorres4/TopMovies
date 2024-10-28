@@ -34,12 +34,6 @@ final class LoaderView {
         }
     }
     
-    func showModalLoader() {
-        if let vc = UIApplication.shared.getTopMostViewController() {
-            vc.present(alert, animated: true)
-        }
-    }
-    
     func removeLoader() {
         DispatchQueue.main.async {
             self.alert.dismiss(animated: true)

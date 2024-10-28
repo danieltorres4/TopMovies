@@ -8,6 +8,10 @@
 import Foundation
 
 protocol MovieDetailInteractorProtocol {
+    /// Retrieves the movie information by its ID
+    /// - Parameter id: The movie unique identifier
+    /// - Returns: Asynchronous `MovieDetail` object containing the movie's details
+    /// - Throws: Throws and error if the fetching fails
     func getDetailMovie(withID id: String) async throws -> MovieDetail
 }
 
@@ -17,6 +21,7 @@ class MovieDetailInteractor: MovieDetailInteractorProtocol {
             throw NetworkError.invalidURL
         }
         
+        // API request asynchronously
         do {
             let (data, response) = try await URLSession.shared.data(from: url)
             

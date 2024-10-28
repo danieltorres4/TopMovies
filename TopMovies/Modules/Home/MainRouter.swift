@@ -8,10 +8,19 @@
 import Foundation
 import UIKit
 
+/// Defines the routing functionalities for the MainView and the navigation between MainView and MovieDetailView
 protocol MainRouterProtocol: AnyObject {
+    /// Handles navigation
     var movieDetailRouter: MoviewDetailRouterProtocol? { get }
+    /// MainViewController reference
     var topRatedMoviesView: MainViewController? { get }
+    /// Displays the top rated ovies as the root view controller
+    /// - Parameter window: Main application window
     func showTopRatedMovies(window: UIWindow?)
+    /// Navigates to the MovieDetailViewController
+    /// - Parameters:
+    ///     - movieID: unique identifier of a movie
+    ///     - movie: MovieViewModel instance that contains movie data
     func showMovieDetail(of movieID: String, movie: MovieViewModel)
 }
 
