@@ -23,7 +23,7 @@ class MainRouter: MainRouterProtocol {
     func showTopRatedMovies(window: UIWindow?) {
         self.movieDetailRouter = MovieDetailRouter()
         let interactor = MainInteractor()
-        let presenter = MainPresenter(mainInteractor: interactor, router: self)
+        let presenter = MainPresenter(params: MainPresenterParams(mainInteractor: interactor, router: self))
         topRatedMoviesView = MainViewController(presenter: presenter)
         presenter.ui = topRatedMoviesView
         

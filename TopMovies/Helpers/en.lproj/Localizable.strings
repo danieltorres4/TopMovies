@@ -22,3 +22,6 @@
 
 // MARK: Top Rated Movies Values
 "topRatedMoviesTitle" = "Top Rated Movies";
+
+// MARK: Other values
+"urlScheme" = "https";

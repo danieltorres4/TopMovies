@@ -9,13 +9,13 @@ import Foundation
 
 protocol MovieDetailPresenterProtocol: AnyObject {
     var ui: MovieDetailPresenterUI? { get }
-    var movieID: String { get }
+    var movieID: MovieID { get }
     var movie: MovieViewModel { get }
     func onViewAppear()
 }
 
 protocol MovieDetailPresenterUI: AnyObject {
-    func updateUI(with viewModel: MovieDetailViewModel, movie: MovieViewModel)
+    func updateUI(with data: MovieDetailData)
 }
 
 class MovieDetailPresenter: MovieDetailPresenterProtocol {
@@ -25,11 +25,11 @@ class MovieDetailPresenter: MovieDetailPresenterProtocol {
     let movie: MovieViewModel
     private let mapper: MovieDetailMapper
     
-    init(movieID: String, interactor: MovieDetailInteractor, mapper: MovieDetailMapper, movie: MovieViewModel) {
-        self.movieID = movieID
-        self.movie = movie
-        self.interactor = interactor
-        self.mapper = mapper
+    init(params: MovieDetailsPresenterParams) {
+        self.movieID = params.movieID
+        self.movie = params.movie
+        self.interactor = params.interactor
+        self.mapper = params.mapper
     }
     
     func onViewAppear() {
@@ -38,8 +38,9 @@ class MovieDetailPresenter: MovieDetailPresenterProtocol {
                 let movieDetails = try await interactor.getDetailMovie(withID: movieID)
                 let viewModel = mapper.map(movie: movieDetails)
                 debugPrint(viewModel)
+                let viewData = MovieDetailData(movie: movie, movieDetailViewModel: viewModel)
                 await MainActor.run {
-                    self.ui?.updateUI(with: viewModel, movie: movie)
+                    self.ui?.updateUI(with: viewData)
                 }
             } catch {
                 debugPrint("Failed to get movie details: \(error)")

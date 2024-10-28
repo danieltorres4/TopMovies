@@ -34,10 +34,10 @@ class MainPresenter: TopRatedMoviesPresenter {
     var currentPage: Int = 0
     var totalPages: Int = 0
     
-    init(mainInteractor: TopRatedMoviesInteractor, movieMapper: MovieMapper = MovieMapper(), router: MainRouterProtocol) {
-        self.mainInteractor = mainInteractor
+    init(params: MainPresenterParams, movieMapper: MovieMapper = MovieMapper()) {
+        self.mainInteractor = params.mainInteractor
         self.mapper = movieMapper
-        self.router = router
+        self.router = params.router
     }
     
     func onViewAppear(page: Int, pagination: Bool) {
@@ -46,7 +46,6 @@ class MainPresenter: TopRatedMoviesPresenter {
         Task {
             do {
                 let moviesResponse = try await mainInteractor.getListOfMovies(page: page)
-                debugPrint("Top Rated Movies: \(moviesResponse)")
                 currentPage = moviesResponse.page
                 totalPages = moviesResponse.totalPages
                 models = moviesResponse.results

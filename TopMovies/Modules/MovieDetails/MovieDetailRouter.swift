@@ -15,7 +15,7 @@ protocol MoviewDetailRouterProtocol: AnyObject {
 class MovieDetailRouter: MoviewDetailRouterProtocol {
     func showMovieDetail(movieID: String, fromVC: UIViewController, movie: MovieViewModel) {
         let interactor = MovieDetailInteractor()
-        let presenter = MovieDetailPresenter(movieID: movieID, interactor: interactor, mapper: MovieDetailMapper(), movie: movie)
+        let presenter = MovieDetailPresenter(params: MovieDetailsPresenterParams(movieID: movieID, interactor: interactor, mapper: MovieDetailMapper(), movie: movie))
         let view = MovieDetailViewController(presenter: presenter)
         presenter.ui = view
         

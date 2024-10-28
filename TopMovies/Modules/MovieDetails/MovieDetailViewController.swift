@@ -24,12 +24,16 @@ class MovieDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "BackgroundColor")
         setupViews()
+        showMovieDetails()
+    }
+    
+    private func showMovieDetails() {
         presenter.onViewAppear()
     }
     
-    func setupViews() {
+    private func setupViews() {
+        view.backgroundColor = UIColor(named: "BackgroundColor")
         view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(contentView)
@@ -59,15 +63,17 @@ class MovieDetailViewController: UIViewController {
 }
 
 extension MovieDetailViewController: MovieDetailPresenterUI {
-    func updateUI(with viewModel: MovieDetailViewModel, movie: MovieViewModel) {
+    func updateUI(with data: MovieDetailData) {
+        let movie = data.movie
+        let movieDetailViewModel = data.movieDetailViewModel
         movieDetailView.movieTitle.text = movie.title
         movieDetailView.movieOverview.text = movie.overview
-        movieDetailView.movieTagline.text = viewModel.tagline
+        movieDetailView.movieTagline.text = movieDetailViewModel.tagline
         movieDetailView.movieReleaseDate.text = "releaseDateTitle".localized + movie.releaseDate
         movieDetailView.movieVoteAverage.text = "averageTitle".localized + String(movie.voteAverage)
-        movieDetailView.movieHomepage.text = viewModel.homepage
+        movieDetailView.movieHomepage.text = movieDetailViewModel.homepage
         
-        if let homepageURL = URL(string: viewModel.homepage), homepageURL.scheme == "https" {
+        if let homepageURL = URL(string: movieDetailViewModel.homepage), homepageURL.scheme == "urlScheme".localized {
             movieDetailView.configureView(with: "movieHomepageAction".localized, homepageURL: homepageURL)
         } else {
             movieDetailView.movieHomepage.textColor = UIColor(named: "FontColor")
