@@ -19,7 +19,7 @@ protocol TopRatedMoviesPresenter: AnyObject {
 
 protocol TopRatedMoviesUI: AnyObject {
     func update(with movies: [MovieViewModel])
-    // func createFooterSpinnerView() -> UIView
+    func showAlert(with title: String, message: String)
     func showLoaderView(loaderView: LoaderView?)
     func hideLoaderView(loaderView: LoaderView?)
 }
@@ -54,6 +54,9 @@ class MainPresenter: TopRatedMoviesPresenter {
                 ui?.update(with: newModels)
             } catch {
                 debugPrint("Failed to fetch movies: \(error.localizedDescription)")
+                await MainActor.run {
+                    self.ui?.showAlert(with: "errorMessageTitle".localized, message: "errorMessageBody".localized)
+                }
             }
         }
         ui?.hideLoaderView(loaderView: loaderView)

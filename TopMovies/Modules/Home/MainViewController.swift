@@ -108,6 +108,10 @@ extension MainViewController: TopRatedMoviesUI {
         }
     }
     
+    func showAlert(with title: String, message: String) {
+        showAlertOneAction(title: title, message: message)
+    }
+    
     func showLoaderView(loaderView: LoaderView?) {
         guard let loaderView = loaderView else { return }
         DispatchQueue.main.async {

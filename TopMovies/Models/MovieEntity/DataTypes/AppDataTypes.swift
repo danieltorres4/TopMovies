@@ -12,7 +12,7 @@ typealias MovieID = String
 
 struct MovieDetailData {
     let movie: MovieViewModel
-    let movieDetailViewModel: MovieDetailViewModel
+    let movieDetailViewModel: MovieDetailViewModel?
 }
 
 struct MovieDetailsPresenterParams {

@@ -15,7 +15,8 @@ protocol MovieDetailPresenterProtocol: AnyObject {
 }
 
 protocol MovieDetailPresenterUI: AnyObject {
-    func updateUI(with data: MovieDetailData)
+    func updateUI(with data: MovieDetailData?)
+    func showAlert(with title: String, message: String)
 }
 
 class MovieDetailPresenter: MovieDetailPresenterProtocol {
@@ -44,6 +45,10 @@ class MovieDetailPresenter: MovieDetailPresenterProtocol {
                 }
             } catch {
                 debugPrint("Failed to get movie details: \(error)")
+                await MainActor.run {
+                    self.ui?.updateUI(with: MovieDetailData(movie: movie, movieDetailViewModel: nil))
+                    self.ui?.showAlert(with: "errorMessageTitle".localized, message: "errorMessageBody".localized)
+                }
             }
         }
     }

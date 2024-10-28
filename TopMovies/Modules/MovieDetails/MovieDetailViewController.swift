@@ -63,9 +63,15 @@ class MovieDetailViewController: UIViewController {
 }
 
 extension MovieDetailViewController: MovieDetailPresenterUI {
-    func updateUI(with data: MovieDetailData) {
+    func updateUI(with data: MovieDetailData?) {
+        guard let data = data, let movieDetailViewModel = data.movieDetailViewModel else {
+            movieDetailView.movieImageView.image = UIImage(systemName: "icloud.slash.fill")
+            movieDetailView.movieTitle.text = data?.movie.title
+            movieDetailView.movieOverview.text = data?.movie.overview
+            return
+        }
         let movie = data.movie
-        let movieDetailViewModel = data.movieDetailViewModel
+        
         movieDetailView.movieTitle.text = movie.title
         movieDetailView.movieOverview.text = movie.overview
         movieDetailView.movieTagline.text = movieDetailViewModel.tagline
@@ -81,5 +87,9 @@ extension MovieDetailViewController: MovieDetailPresenterUI {
         }
         
         movieDetailView.movieImageView.loadFrom(from: movie.posterPath)
+    }
+    
+    func showAlert(with title: String, message: String) {
+        showAlertOneAction(title: title, message: message)
     }
 }
