@@ -8,6 +8,13 @@
 import UIKit
 
 class MovieTableViewCell: UITableViewCell {
+    private let loadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.color = UIColor(named: "AccentedColor")
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
     let movieImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
@@ -44,6 +51,7 @@ class MovieTableViewCell: UITableViewCell {
     
     func setupViews() {
         addSubview(movieImageView)
+        addSubview(loadingIndicator)
         addSubview(movieName)
         addSubview(movieReleaseDateLabel)
         
@@ -53,6 +61,11 @@ class MovieTableViewCell: UITableViewCell {
             movieImageView.heightAnchor.constraint(equalToConstant: 150),
             movieImageView.widthAnchor.constraint(equalToConstant: 100),
             movieImageView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -12),
+            
+            loadingIndicator.centerXAnchor.constraint(equalTo: movieImageView.centerXAnchor),
+            loadingIndicator.centerYAnchor.constraint(equalTo: movieImageView.centerYAnchor),
+            loadingIndicator.widthAnchor.constraint(equalTo: movieImageView.widthAnchor, multiplier: 1.3),
+            loadingIndicator.heightAnchor.constraint(equalTo: movieImageView.heightAnchor, multiplier: 1.3),
             
             movieName.leadingAnchor.constraint(equalTo: movieImageView.trailingAnchor, constant: 18),
             movieName.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
@@ -68,7 +81,14 @@ class MovieTableViewCell: UITableViewCell {
     func configureCell(model: MovieViewModel) {
         movieName.text = model.title
         movieReleaseDateLabel.text = model.releaseDate
-        movieImageView.loadFrom(from: model.posterPath, placeholder: UIImage(systemName: "popcorn"))
+        let placeholder = UIImage(systemName: "popcorn")?.withRenderingMode(.alwaysTemplate)
+        placeholder?.withTintColor(UIColor(named: "AccentedColor") ?? .font)
+        loadingIndicator.startAnimating()
+        movieImageView.loadFrom(from: model.posterPath, placeholder: placeholder) { [weak self] success in
+            DispatchQueue.main.async {
+                self?.loadingIndicator.stopAnimating()
+            }
+        }
     }
 
     
