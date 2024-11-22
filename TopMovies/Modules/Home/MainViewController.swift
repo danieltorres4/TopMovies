@@ -83,6 +83,10 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let lastItem = presenter.movieViewModels.count - 1
         if indexPath.row == lastItem && presenter.currentPage < presenter.totalPages {
+            // Stopping the table scroll
+            if tableView.isDragging || tableView.isDecelerating {
+                tableView.setContentOffset(tableView.contentOffset, animated: false)
+            }
             // Request more info
             getTopRatedMovies(page: presenter.currentPage + 1, pagination: true)
         }
