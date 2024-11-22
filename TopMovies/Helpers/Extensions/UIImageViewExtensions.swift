@@ -9,14 +9,50 @@ import Foundation
 import UIKit
 
 extension UIImageView {
-    func loadFrom(from URLAddress: String, contentMode mode: ContentMode = .scaleAspectFit) {
-        guard let url = URL(string: URLAddress) else { return }
-        contentMode = mode
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200, let mimeType = response?.mimeType, mimeType.hasPrefix("image"), let data = data, error == nil, let image = UIImage(data: data) else { return }
+    private static var currentURL: [UIImageView: URL] = [:]
+    
+    func loadFrom(from URLAddress: String, contentMode mode: ContentMode = .scaleAspectFit, placeholder: UIImage? = nil) {
+        self.contentMode = mode
+        self.image = placeholder
+        
+        guard let url = URL(string: URLAddress) else {
+            debugPrint("Invalid URL: \(URLAddress)")
+            return
+        }
+        
+        // Assigning current URL and checking if it already exists in cache
+        UIImageView.currentURL[self] = url
+        if let cachedImage = ImageCache.shared.object(forKey: URLAddress as NSString) {
+            self.image = cachedImage
+            return
+        }
+        
+        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+            guard let self = self else { return }
             
-            DispatchQueue.main.async { [weak self] in
-                self?.image = image
+            // Verifying if the URL is the same
+            if UIImageView.currentURL[self] != url {
+                return
+            }
+            
+            if let error = error {
+                debugPrint("Error loading image: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                  let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                  let data = data, error == nil,
+                  let image = UIImage(data: data) else {
+                debugPrint("Invalid image data")
+                return
+            }
+            
+            // Caching
+            ImageCache.shared.setObject(image, forKey: URLAddress as NSString)
+            
+            DispatchQueue.main.async {
+                self.image = image
             }
         }.resume()
     }

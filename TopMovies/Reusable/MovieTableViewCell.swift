@@ -68,7 +68,7 @@ class MovieTableViewCell: UITableViewCell {
     func configureCell(model: MovieViewModel) {
         movieName.text = model.title
         movieReleaseDateLabel.text = model.releaseDate
-        movieImageView.loadFrom(from: model.posterPath)
+        movieImageView.loadFrom(from: model.posterPath, placeholder: UIImage(systemName: "popcorn"))
     }
 
     
