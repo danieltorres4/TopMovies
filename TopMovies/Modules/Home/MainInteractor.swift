@@ -16,14 +16,24 @@ protocol TopRatedMoviesInteractor: AnyObject {
 }
 
 /// Defines possible network errors
-enum NetworkError: Error {
-    case invalidURL
-    case dataError
-    case decodingError
+enum NetworkError: String, Error {
+    case invalidURL = "Invalid URL"
+    case dataError = "Data Error"
+    case decodingError = "Decoding Error"
+    case parametersNil = "Parameters were nil."
+    case encodingFailed = "Parameter encoding failed."
+    case missingURL = "URL is nil."
+    case custom
 }
 
 class MainInteractor: TopRatedMoviesInteractor {
     func getListOfMovies(page: Int?) async throws -> TopRatedMovies {
+        let topRatedMoviesService = ListOfMoviesService()
+        let topRatedMovies = try await topRatedMoviesService.getTopRatedMovies(page: page ?? 1)
+        
+        return topRatedMovies
+    }
+    /*func getListOfMovies(page: Int?) async throws -> TopRatedMovies {
         guard let apiKey = getConfigurationValue(forKey: "API_KEY"), let baseURL = getConfigurationValue(forKey: "API_BASE_URL"), let url = URL(string: "\(baseURL)/movie/top_rated?api_key=\(apiKey)") else {
             throw NetworkError.invalidURL
         }
@@ -65,5 +75,5 @@ class MainInteractor: TopRatedMoviesInteractor {
         } catch {
             throw NetworkError.dataError
         }
-    }
+    }*/
 }

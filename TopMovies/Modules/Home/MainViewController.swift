@@ -106,7 +106,7 @@ extension MainViewController: UITableViewDataSource, UITableViewDelegate {
 extension MainViewController: TopRatedMoviesUI {
     func update(with movies: [MovieViewModel]) {
         self.topRatedMovies.append(contentsOf: movies)
-        debugPrint("Received data: \(movies)")
+        // debugPrint("Received data: \(movies)")
         DispatchQueue.main.async {
             self.topRatedMoviesTV.reloadData()
         }
