@@ -12,13 +12,17 @@ public enum MovieDetailsAPI {
 }
 
 extension MovieDetailsAPI: EndPointType {
+    private var configManager: ConfigurationManager {
+        return ConfigurationManager()
+    }
+    
     var environmentBaseURL: String {
-        guard let envBaseURL = getConfigurationValue(forKey: "API_BASE_URL") else { fatalError("envBaseURL could not be configured") }
+        guard let envBaseURL = configManager.getValue(forKey: "API_BASE_URL") else { fatalError("envBaseURL could not be configured") }
         return envBaseURL
     }
     
     var baseURL: URL {
-        guard let url = URL(string: environmentBaseURL) else { fatalError("baseURL could not be configured")}
+        guard let url = URL(string: environmentBaseURL) else { fatalError("baseURL could not be configured") }
         return url
     }
     
@@ -38,7 +42,15 @@ extension MovieDetailsAPI: EndPointType {
     var task: HTTPTask {
         switch self {
         case .getMovieDetails:
-            return .requestParameters(bodyParameters: nil, bodyEncoding: .urlEncoding, urlParameters: ["api_key": getConfigurationValue(forKey: "API_KEY") ?? "", "language": Locale.preferredLanguages.first ?? "en-US"])
+            let apiKey = configManager.getValue(forKey: "API_KEY") ?? ""
+            return .requestParameters(
+                bodyParameters: nil,
+                bodyEncoding: .urlEncoding,
+                urlParameters: [
+                    "api_key": apiKey, 
+                    "language": Locale.preferredLanguages.first ?? "en-US"
+                ]
+            )
         }
     }
     

@@ -12,8 +12,12 @@ public enum ListOfMoviesApi {
 }
 
 extension ListOfMoviesApi: EndPointType {
+    private var configManager: ConfigurationManager {
+        return ConfigurationManager()
+    }
+    
     var environmentBaseURL: String {
-        guard let envBaseURL = getConfigurationValue(forKey: "API_BASE_URL") else { fatalError("envBaseURL could not be configured") }
+        guard let envBaseURL = configManager.getValue(forKey: "API_BASE_URL") else { fatalError("envBaseURL could not be configured") }
         return envBaseURL
     }
     
@@ -38,7 +42,16 @@ extension ListOfMoviesApi: EndPointType {
     var task: HTTPTask {
         switch self {
         case .getTopRatedMovies(let page):
-            return .requestParameters(bodyParameters: nil, bodyEncoding: .urlEncoding, urlParameters: ["api_key": getConfigurationValue(forKey: "API_KEY") ?? "", "language": Locale.preferredLanguages.first ?? "en-US", "page": page])
+            let apiKey = configManager.getValue(forKey: "API_KEY") ?? ""
+            return .requestParameters(
+                bodyParameters: nil,
+                bodyEncoding: .urlEncoding,
+                urlParameters: [
+                    "api_key": apiKey,
+                    "language": Locale.preferredLanguages.first ?? "en-US",
+                    "page": page
+                ]
+            )
         }
     }
     
