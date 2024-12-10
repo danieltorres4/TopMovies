@@ -13,7 +13,8 @@ public enum MovieDetailsAPI {
 
 extension MovieDetailsAPI: EndPointType {
     var environmentBaseURL: String {
-        return "https://api.themoviedb.org/3"
+        guard let envBaseURL = getConfigurationValue(forKey: "API_BASE_URL") else { fatalError("envBaseURL could not be configured") }
+        return envBaseURL
     }
     
     var baseURL: URL {
@@ -36,8 +37,8 @@ extension MovieDetailsAPI: EndPointType {
     
     var task: HTTPTask {
         switch self {
-        case .getMovieDetails(let movieDetail):
-            return .requestParameters(bodyParameters: nil, bodyEncoding: .urlEncoding, urlParameters: ["api_key": "aac68339b14a798e91c45b11fd82e3ee", "language": Locale.preferredLanguages.first ?? "en-US"])
+        case .getMovieDetails:
+            return .requestParameters(bodyParameters: nil, bodyEncoding: .urlEncoding, urlParameters: ["api_key": getConfigurationValue(forKey: "API_KEY") ?? "", "language": Locale.preferredLanguages.first ?? "en-US"])
         }
     }
     

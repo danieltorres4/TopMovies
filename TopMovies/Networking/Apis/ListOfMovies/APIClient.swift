@@ -11,11 +11,10 @@ public enum ListOfMoviesApi {
     case getTopRatedMovies(page: Int = 0)
 }
 
-// https://api.themoviedb.org/3/movie/top_rated?api_key=aac68339b14a798e91c45b11fd82e3ee&language=en-US&page=1
-
 extension ListOfMoviesApi: EndPointType {
     var environmentBaseURL: String {
-        return "https://api.themoviedb.org/3"
+        guard let envBaseURL = getConfigurationValue(forKey: "API_BASE_URL") else { fatalError("envBaseURL could not be configured") }
+        return envBaseURL
     }
     
     var baseURL: URL {
@@ -39,7 +38,7 @@ extension ListOfMoviesApi: EndPointType {
     var task: HTTPTask {
         switch self {
         case .getTopRatedMovies(let page):
-            return .requestParameters(bodyParameters: nil, bodyEncoding: .urlEncoding, urlParameters: ["api_key": "aac68339b14a798e91c45b11fd82e3ee", "language": Locale.preferredLanguages.first ?? "en-US", "page": page])
+            return .requestParameters(bodyParameters: nil, bodyEncoding: .urlEncoding, urlParameters: ["api_key": getConfigurationValue(forKey: "API_KEY") ?? "", "language": Locale.preferredLanguages.first ?? "en-US", "page": page])
         }
     }
     
