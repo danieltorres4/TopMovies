@@ -17,6 +17,12 @@ protocol MovieDetailInteractorProtocol {
 
 class MovieDetailInteractor: MovieDetailInteractorProtocol {
     func getDetailMovie(withID id: String) async throws -> MovieDetail {
+        let movieDetailsService = MovieDetailsService()
+        let movieDetails = try await movieDetailsService.getMovieDetails(movieId: id)
+        
+        return movieDetails
+    }
+    /*func getDetailMovie(withID id: String) async throws -> MovieDetail {
         guard let apiKey = getConfigurationValue(forKey: "API_KEY"), let baseURL = getConfigurationValue(forKey: "API_BASE_URL"), let url = URL(string: "\(baseURL)/movie/\(id)?api_key=\(apiKey)") else {
             throw NetworkError.invalidURL
         }
@@ -38,5 +44,5 @@ class MovieDetailInteractor: MovieDetailInteractorProtocol {
         } catch {
             throw NetworkError.dataError
         }
-    }
+    }*/
 }
