@@ -7,23 +7,6 @@
 
 import Foundation
 
-protocol MovieDetailPresenterProtocol: AnyObject {
-    /// MovieDetailViewController reference
-    var ui: MovieDetailPresenterUI? { get }
-    /// Movie unique identifier
-    var movieID: MovieID { get }
-    /// Selected movie
-    var movie: MovieViewModel { get }
-    /// Triggered when the view appears
-    func onViewAppear()
-}
-
-/// Methods required for updating the MovieDetailView
-protocol MovieDetailPresenterUI: AnyObject {
-    func updateUI(with data: MovieDetailData?)
-    func showAlert(with title: String, message: String)
-}
-
 class MovieDetailPresenter: MovieDetailPresenterProtocol {
     weak var ui: MovieDetailPresenterUI?
     private let interactor: MovieDetailInteractorProtocol

@@ -7,14 +7,6 @@
 
 import Foundation
 
-protocol TopRatedMoviesInteractor: AnyObject {
-    /// Asynchronous method to fetch the list of the top rated movies from the API
-    /// - Parameter page: page number for the top rated movies request. Defaults to 1.
-    /// - Throws: May throw a `Network Error` if an issue occurs
-    /// - Returns: Returns a `TopRatedMovies` object
-    func getListOfMovies(page: Int?) async throws -> TopRatedMovies
-}
-
 /// Defines possible network errors
 enum NetworkError: String, Error {
     case invalidURL = "Invalid URL"

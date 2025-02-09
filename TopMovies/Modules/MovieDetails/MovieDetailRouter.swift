@@ -8,15 +8,6 @@
 import Foundation
 import UIKit
 
-protocol MoviewDetailRouterProtocol: AnyObject {
-    /// Shows the movie details
-    /// - Parameters:
-    ///     - movieID: The movie unique identifier
-    ///     - fromVC: The view controller from which the detail view is presented
-    ///     - movie: MovieViewModel instance
-    func showMovieDetail(movieID: String, fromVC: UIViewController, movie: MovieViewModel)
-}
-
 class MovieDetailRouter: MoviewDetailRouterProtocol {
     func showMovieDetail(movieID: String, fromVC: UIViewController, movie: MovieViewModel) {
         let interactor = MovieDetailInteractor()

@@ -8,33 +8,6 @@
 import Foundation
 import UIKit
 
-protocol TopRatedMoviesPresenter: AnyObject {
-    /// MainViewController reference
-    var ui: TopRatedMoviesUI? { get }
-    /// List of movies
-    var movieViewModels: [MovieViewModel] { get }
-    // General request information
-    var currentPage: Int { get }
-    var totalPages: Int { get }
-    /// Triggered when the view appears
-    /// - Parameters:
-    ///     - page: page number to fetch movies from
-    func onViewAppear(page: Int, pagination: Bool)
-    /// Called when a movie is selected
-    /// - Parameters:
-    ///     - id: Selected movie id
-    ///     - movie: MovieViewModel instance of the selected movie
-    func selectedMovie(with id: Int, movie: MovieViewModel)
-}
-
-/// Methods required for updating the MainView
-protocol TopRatedMoviesUI: AnyObject {
-    func update(with movies: [MovieViewModel])
-    func showAlert(with title: String, message: String)
-    func showLoaderView(loaderView: LoaderView?)
-    func hideLoaderView(loaderView: LoaderView?)
-}
-
 class MainPresenter: TopRatedMoviesPresenter {
     weak var ui: TopRatedMoviesUI?
     private let mapper: MovieMapper
